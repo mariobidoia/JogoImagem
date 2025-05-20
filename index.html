@@ -19,8 +19,8 @@
 
     .container {
       position: relative;
-      width: 500px;
-      height: 500px;
+      width: 600px;
+      height: 600px;
       margin: 20px auto;
       border: 5px solid white;
       box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
@@ -31,8 +31,8 @@
 
     .cobertura {
       position: absolute;
-      width: 100px;
-      height: 100px;
+      width: 120px;
+      height: 120px;
       background-color: rgba(0, 0, 0, 1);
       color: white;
       font-weight: bold;
@@ -74,7 +74,6 @@
 <body>
 
   <h1>🎯 Jogo: Descubra a Imagem</h1>
-  <p>Clique nos blocos para revelar a imagem escondida!</p>
 
   <div class="container" id="imagemContainer"></div>
 
@@ -92,7 +91,7 @@
     ];
     let filaImagens = [];
 
-    const TAM = 100;
+    const TAM = 120;
     const GRID = 5;
 
     function embaralhar(array) {
