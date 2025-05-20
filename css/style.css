@@ -1,0 +1,32 @@
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(to right, #00c9a7, #845ec2);
+    color: white;
+    text-align: center;
+    padding: 3px;
+  }
+  
+  h1 {
+    margin-bottom: 20px;
+  }
+  
+  .menu {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+  }
+  
+  .botao {
+    background-color: #ffffff30;
+    padding: 15px 30px;
+    text-decoration: none;
+    color: white;
+    font-size: 20px;
+    border-radius: 20px;
+    transition: background 0.3s;
+  }
+  
+  .botao:hover {
+    background-color: #ffffff50;
+  }
+  

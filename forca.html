@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Jogo da Forca</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <style>
+      #imagemForca {
+        width: 450px;
+        height: 600px;
+        margin: 10px auto;
+      }
+      #palavra {
+        font-size: 80px;
+        letter-spacing: 10px;
+        margin: 20px 0;
+      }
+      .letras {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        max-width: 920px;
+        margin: 0 auto;
+      }
+      .letras button {
+        width: 60px;
+        height: 60px;
+        margin: 5px;
+        border: none;
+        border-radius: 10px;
+        background-color: #ffffff20;
+        color: white;
+        font-size: 18px;
+        cursor: pointer;
+      }
+      .letras button:disabled {
+        background-color: #ffffff10;
+      }
+      #mensagem {
+        font-size: 20px;
+        margin-top: 20px;
+      }
+      .reiniciar {
+        margin-top: 20px;
+      }
+
+      .container {
+        display: flex;
+        padding: 15px;
+      }
+
+      .container .jogo{
+        width: 1000px;
+        margin: 0 auto;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>🎮 Atividades Interativas</h1>
+    <div class="menu">
+      <a href="index.html" class="botao">🧩 Jogo da Imagem</a>
+      <a href="forca.html" class="botao">🔤 Jogo da Forca</a>
+    </div>
+    <h1>🔤 Jogo da Forca</h1>
+    <div class="container">
+      <div>
+        <img id="imagemForca" src="img/forca0.png" alt="Forca" />
+      </div>
+      <div class="jogo">
+        <div id="palavra">_ _ _ _</div>
+        <div class="letras" id="botoesLetras"></div>
+        <div id="mensagem"></div>
+        <button class="botao reiniciar" onclick="novaRodada()">
+          🔁 Nova Palavra
+        </button>
+        
+      </div>
+    </div>
+
+    <script>
+      const palavras = [
+        "biscoito",
+        "dinossauro",
+        "marilia",
+        "senai",
+        "bradesco",        
+        "dirceu",
+        "abreuzão"
+      ];
+
+      let palavrasDisponiveis = [...palavras];
+      let palavraAtual = "";
+      let exibicao = [];
+      let erros = 0;
+      const limiteErros = 10;
+
+      function criarBotoes() {
+        const letrasDiv = document.getElementById("botoesLetras");
+        letrasDiv.innerHTML = "";
+        for (let i = 65; i <= 90; i++) {
+          const letra = String.fromCharCode(i);
+          const btn = document.createElement("button");
+          btn.textContent = letra;
+          btn.onclick = () => tentarLetra(letra);
+          letrasDiv.appendChild(btn);
+        }
+      }
+
+      function atualizarImagem() {
+        document.getElementById("imagemForca").src = `images/forca${erros}.jpg`;
+      }
+
+      function atualizarTela() {
+        document.getElementById("palavra").textContent = exibicao.join(" ");
+        atualizarImagem();
+      }
+
+      function tentarLetra(letra) {
+        const botoes = document.querySelectorAll("button");
+        botoes.forEach((b) => {
+          if (b.textContent === letra) b.disabled = true;
+        });
+
+        if (palavraAtual.includes(letra.toLowerCase())) {
+          for (let i = 0; i < palavraAtual.length; i++) {
+            if (palavraAtual[i] === letra.toLowerCase()) {
+              exibicao[i] = letra.toUpperCase();
+            }
+          }
+        } else {
+          erros++;
+        }
+
+        atualizarTela();
+        verificarFim();
+      }
+
+      function verificarFim() {
+        if (!exibicao.includes("_")) {
+          document.getElementById("mensagem").textContent =
+            "🎉 Parabéns! Você acertou!";
+          desativarTeclado();
+        } else if (erros >= limiteErros) {
+          document.getElementById(
+            "mensagem"
+          ).textContent = `😢 Você perdeu! A palavra era: ${palavraAtual.toUpperCase()}`;
+          desativarTeclado();
+        }
+      }
+
+      function desativarTeclado() {
+        const botoes = document.querySelectorAll("button");
+        botoes.forEach((b) => {
+          if (!b.classList.contains("reiniciar")) b.disabled = true;
+        });
+      }
+
+      function escolherPalavraAleatoria() {
+      if (palavrasDisponiveis.length === 0) {
+        alert("Todas as palavras foram usadas. Reiniciando...");
+        palavrasDisponiveis = [...palavras];
+      }
+
+      const indice = Math.floor(Math.random() * palavrasDisponiveis.length);
+      const palavra = palavrasDisponiveis[indice];
+      palavrasDisponiveis.splice(indice, 1);
+      return palavra;
+    }
+
+      function novaRodada() {
+        palavraAtual = escolherPalavraAleatoria();
+        exibicao = Array(palavraAtual.length).fill("_");
+        erros = 0;
+        document.getElementById("mensagem").textContent = "";
+        atualizarImagem();
+        criarBotoes();
+        atualizarTela();
+      }
+
+      window.onload = novaRodada;
+    </script>
+  </body>
+</html>

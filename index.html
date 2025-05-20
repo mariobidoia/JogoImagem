@@ -10,7 +10,7 @@
       color: white;
       text-align: center;
       margin: 0;
-      padding: 20px;
+      padding: 2px;
     }
 
     h1 {
@@ -21,7 +21,7 @@
       position: relative;
       width: 600px;
       height: 600px;
-      margin: 20px auto;
+      margin: 2px auto;
       border: 5px solid white;
       box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
       background-size: cover;
@@ -47,7 +47,8 @@
     }
 
     .cobertura:hover {
-      transform: scale(1.05);
+      transform: scale(1.01);
+      font-size: 28px;
     }
 
     button {
@@ -70,10 +71,17 @@
       margin-top: 20px;
     }
   </style>
+
+  <link rel="stylesheet" href="./css/style.css">
 </head>
 <body>
-
+    <h1>🎮 Atividades Interativas</h1>
+    <div class="menu">
+      <a href="index.html" class="botao">🧩 Jogo da Imagem</a>
+      <a href="forca.html" class="botao">🔤 Jogo da Forca</a>
+    </div>
   <h1>🎯 Jogo: Descubra a Imagem</h1>
+  <!-- <h2 id="timer">⏱️ Tempo restante: 60s</h2> -->
 
   <div class="container" id="imagemContainer"></div>
 
@@ -127,12 +135,37 @@
       const imagem = obterProximaImagem();
       container.style.backgroundImage = `url('${imagem}')`;
       criarBlocos();
+      
     }
 
     function revelarTudo() {
       const blocos = document.querySelectorAll(".cobertura");
       blocos.forEach(bloco => bloco.style.display = "none");
     }
+
+    let tempoRestante = 60;
+let intervaloTempo;
+
+function atualizarTimer() {
+  const timerDisplay = document.getElementById("timer");
+  timerDisplay.textContent = `⏱️ Tempo restante: ${tempoRestante}s`;
+}
+
+function iniciarTemporizador() {
+  clearInterval(intervaloTempo);
+  tempoRestante = 60;
+  atualizarTimer();
+
+  intervaloTempo = setInterval(() => {
+    tempoRestante--;
+    atualizarTimer();
+    if (tempoRestante === 0) {
+      clearInterval(intervaloTempo);
+      alert("⏰ Tempo esgotado!");
+      revelarTudo();
+    }
+  }, 1000);
+}
 
     window.onload = novaRodada;
   </script>
