@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Jogo: Descubra a Imagem</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #8e2de2, #4a00e0);
+      color: white;
+      text-align: center;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1 {
+      margin-bottom: 10px;
+    }
+
+    .container {
+      position: relative;
+      width: 500px;
+      height: 500px;
+      margin: 20px auto;
+      border: 5px solid white;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+      background-size: cover;
+      background-position: center;
+      border-radius: 12px;
+    }
+
+    .cobertura {
+      position: absolute;
+      width: 100px;
+      height: 100px;
+      background-color: rgba(0, 0, 0, 1);
+      color: white;
+      font-weight: bold;
+      font-size: 16px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      border-radius: 8px;
+      transition: all 0.2s ease-in-out;
+      border: 1px solid #fff;
+    }
+
+    .cobertura:hover {
+      transform: scale(1.05);
+    }
+
+    button {
+      background: #00c9a7;
+      color: #fff;
+      border: none;
+      padding: 12px 24px;
+      margin: 10px;
+      font-size: 16px;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background: #00a18c;
+    }
+
+    .botoes {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🎯 Jogo: Descubra a Imagem</h1>
+  <p>Clique nos blocos para revelar a imagem escondida!</p>
+
+  <div class="container" id="imagemContainer"></div>
+
+  <div class="botoes">
+    <button onclick="novaRodada()">🖼️ Nova Imagem</button>
+    <button onclick="revelarTudo()">👁️ Revelar Tudo</button>
+  </div>
+
+  <script>
+    const container = document.getElementById("imagemContainer");
+    const imagensOriginais = [
+      "images/imagem1.jpg",
+      "images/imagem2.jpg",
+      "images/imagem3.jpg"
+    ];
+    let filaImagens = [];
+
+    const TAM = 100;
+    const GRID = 5;
+
+    function embaralhar(array) {
+      return array.sort(() => Math.random() - 0.5);
+    }
+
+    function obterProximaImagem() {
+      if (filaImagens.length === 0) {
+        filaImagens = embaralhar([...imagensOriginais]);
+      }
+      return filaImagens.pop();
+    }
+
+    function criarBlocos() {
+      container.innerHTML = "";
+      let id = 1;
+      for (let y = 0; y < GRID; y++) {
+        for (let x = 0; x < GRID; x++) {
+          const bloco = document.createElement("div");
+          bloco.className = "cobertura";
+          bloco.id = "b" + id;
+          bloco.textContent = id;
+          bloco.style.left = `${x * TAM}px`;
+          bloco.style.top = `${y * TAM}px`;
+          bloco.addEventListener("click", () => bloco.style.display = "none");
+          container.appendChild(bloco);
+          id++;
+        }
+      }
+    }
+
+    function novaRodada() {
+      const imagem = obterProximaImagem();
+      container.style.backgroundImage = `url('${imagem}')`;
+      criarBlocos();
+    }
+
+    function revelarTudo() {
+      const blocos = document.querySelectorAll(".cobertura");
+      blocos.forEach(bloco => bloco.style.display = "none");
+    }
+
+    window.onload = novaRodada;
+  </script>
+
+</body>
+</html>
